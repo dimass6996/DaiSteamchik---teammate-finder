@@ -1,0 +1,26 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 1. Имя нашего проекта -->
+    <groupId>ru.daisteamchik</groupId>
+    <artifactId>daisteamchik-bot</artifactId>
+    <version>1.0</version>
+
+    <!-- добавляем библиотеки -->
+    <dependencies>
+        <!-- Для связи с Telegram -->
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots</artifactId>
+            <version>6.9.7.1</version>
+        </dependency>
+
+        <!-- Для юнит-тестов -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
