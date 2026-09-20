@@ -1,4 +1,4 @@
-package ru.daisteamchik.command
+package ru.daisteamchik.command;
 
 public class HelpCommand implements Command {
 
@@ -7,8 +7,8 @@ public class HelpCommand implements Command {
     public HelpCommand(CommandRegistry registry){
         this.registry = registry;
     }
-    @override
-    String getName(){
+    @Override
+    public String getName(){
         return "/help";
 
     }
@@ -18,7 +18,32 @@ public class HelpCommand implements Command {
         return "Выводит список всех команд или справку по конкретной: /help <команда>";
     }
 
-    
-    String execute(String[] args);
+    @Override
+    public String execute(String[] args){
+
+        if (args.length > 0){
+            String name = "";
+            if (args[0].startsWith("/")){
+                name = args[0];  
+            }else{
+                name = "/" + args[0];
+
+            }
+            Command cmd = registry.getCommand(name);
+            if (cmd != null){
+                return cmd.getName() + " — " + cmd.getDescription();
+            }else{
+                return "Команда " + name + " не найдена.";
+            }
+        }else{
+            StringBuilder answer = new StringBuilder("Список доступных команд:\n");
+            for (Command cmd : registry.getAllCommands()){
+                answer.append(cmd.getName()).append("-");
+                answer.append(cmd.getDescription()).append("\n");
+            }
+            return answer.toString();
+        }
+
+    }
 
 }
