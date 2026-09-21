@@ -22,7 +22,7 @@ public class HelpCommand implements Command {
     public String execute(String[] args){
 
         if (args.length > 0){
-            String name = "";
+            String name;
             if (args[0].startsWith("/")){
                 name = args[0];  
             }else{

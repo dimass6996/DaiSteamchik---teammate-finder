@@ -1,3 +1,8 @@
 .idea/
 target/
 
+# (.env содержит токены)
+.env
+.env.local
+.env.*.local
+
