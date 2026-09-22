@@ -15,6 +15,7 @@ public class HelpCommandTest{
 
         String result = helpCommand.execute(new String[]{}); // вызываю команду help с пустыми аргументами
 
+
         assertNotNull(result);//проверяю что команда что-то вернула вообще
         assertTrue(result.contains("/help"));// проверяю есть ли там нужное имя команды
         assertTrue(result.contains("Выводит список всех команд"));

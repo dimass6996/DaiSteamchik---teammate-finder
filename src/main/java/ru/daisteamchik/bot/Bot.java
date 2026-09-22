@@ -1,6 +1,7 @@
 package ru.daisteamchik.bot;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.daisteamchik.command.Command;
 import ru.daisteamchik.command.CommandRegistry;
@@ -24,16 +25,28 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             String text = update.getMessage().getText();
-            System.out.println(text);
+            long chatId = update.getMessage().getChatId();
+
+
             if (text.startsWith("/")) {
 
                 String[] parts = text.split(" "); // разделяю сообщение
-                String commandName = parts[0];
-                String[] args = Arrays.copyOfRange(parts,1,parts.length);
+                String commandName = parts[0]; // беру саму команду
+                String[] args = Arrays.copyOfRange(parts,1,parts.length); // беру аргументы
 
                 Command command = commandRegistry.getCommand(commandName);
                 if (command != null) {
-                    System.out.println(command.execute(args));
+                    String answer = command.execute(args);
+
+                    SendMessage message = new SendMessage();
+                    message.setChatId(chatId);
+                    message.setText(answer);
+
+                    try {
+                        execute(message);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         }
