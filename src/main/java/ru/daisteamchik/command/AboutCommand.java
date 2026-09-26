@@ -9,7 +9,7 @@ public class AboutCommand implements Command {
 
     @Override
     public String execute(String[] args) {
-        return "🎮 *DaiSteamchik: Teammate Finder*\n" +
+        return "🎮 DaiSteamchik: Teammate Finder\n" +
                 "Платформа для быстрого поиска тиммейтов для совместных игр в Steam.\n\n" +
                 "Возможности:\n" +
                 "• Подбор игроков по играм (CS2, Dota 2, Apex...)\n" +
