@@ -8,11 +8,11 @@ public class CommandRegistry {  // класс коллекции которая 
 
     private final Map<String,Command> commands = new HashMap<>();
 
-    public void register(Command command){ // метод с помощью которого можно добавить новую комманду в реестр комманд
+    public void register(Command command){ // метод с помощью которого можно добавить новую команду в реестр комманд
         commands.put(command.getName(),command);
     }
 
-    public Command getCommand(String name){ // метод по которому можно получить конкретную комманду из реестра
+    public Command getCommand(String name){ // метод по которому можно получить конкретную команду из реестра
         return commands.get(name);
     }
 
