@@ -10,7 +10,7 @@ public class StartCommandTest{
 
         StartCommand startCommand = new StartCommand(); // создаю тестовый объект HelpCommand
 
-        String result = startCommand.execute(new String[]{}); // вызываю команду help с пустыми аргументами
+        String result = startCommand.execute(new String[]{}).getMessage(); // вызываю команду help с пустыми аргументами
 
         assertNotNull(result);//проверяю что команда что-то вернула вообще
         assertTrue(result.contains("Привет!"));// проверяю есть ли там нужное имя команды

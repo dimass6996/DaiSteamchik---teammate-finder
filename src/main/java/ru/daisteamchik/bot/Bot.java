@@ -5,6 +5,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.daisteamchik.command.Command;
 import ru.daisteamchik.command.CommandRegistry;
+import ru.daisteamchik.command.CommandResponse;
 
 import java.util.Arrays;
 
@@ -36,11 +37,11 @@ public class Bot extends TelegramLongPollingBot {
 
                 Command command = commandRegistry.getCommand(commandName);
                 if (command != null) {
-                    String answer = command.execute(args);
+                    CommandResponse answer = command.execute(args);
 
                     SendMessage message = new SendMessage();
                     message.setChatId(chatId);
-                    message.setText(answer);
+                    message.setText(answer.getMessage());
 
                     try {
                         execute(message);

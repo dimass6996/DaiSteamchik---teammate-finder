@@ -8,5 +8,5 @@ class AuthorCommandTest {
     @BeforeEach void setUp() { command = new AuthorCommand(); }
     @Test void getName() { assertEquals("/author", command.getName()); }
     @Test void getDescription() { assertNotNull(command.getDescription()); }
-    @Test void execute() { assertTrue(command.execute(new String[]{}).contains("Авторы")); }
+    @Test void execute() { assertTrue(command.execute(new String[]{}).getMessage().contains("Авторы")); }
 }

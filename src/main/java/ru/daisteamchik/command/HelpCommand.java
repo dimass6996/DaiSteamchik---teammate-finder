@@ -19,7 +19,7 @@ public class HelpCommand implements Command {
     }
 
     @Override
-    public String execute(String[] args){
+    public CommandResponse execute(String[] args){
 
         if (args.length > 0){
             String name;
@@ -31,9 +31,11 @@ public class HelpCommand implements Command {
             }
             Command cmd = registry.getCommand(name);
             if (cmd != null){
-                return cmd.getName() + " — " + cmd.getDescription();
+                String text = cmd.getName() + " — " + cmd.getDescription();
+                return new CommandResponse(text);
             }else{
-                return "Команда " + name + " не найдена.";
+                String text = "Команда " + name + " не найдена.";
+                return new CommandResponse(text);
             }
         }else{
             StringBuilder answer = new StringBuilder("Список доступных команд:\n");
@@ -41,7 +43,8 @@ public class HelpCommand implements Command {
                 answer.append(cmd.getName()).append("-");
                 answer.append(cmd.getDescription()).append("\n");
             }
-            return answer.toString();
+
+            return new CommandResponse(answer.toString());
         }
 
     }

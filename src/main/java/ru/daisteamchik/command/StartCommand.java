@@ -10,8 +10,8 @@ public class StartCommand implements Command {
         return "Команда запускает бота и выводит приветственное сообщение";
     }
 
-    public String execute(String[] args){
-        return "Привет! 🎮 Добро пожаловать в DaiSteamchik — мини-соцсеть для быстрого и точного поиска тиммейтов в Steam!\n\n" +
+    public CommandResponse execute(String[] args){
+        String text = "Привет! 🎮 Добро пожаловать в DaiSteamchik — мини-соцсеть для быстрого и точного поиска тиммейтов в Steam!\n\n" +
                 "Мы устраняем проблему долгого ручного поиска на форумах и в открытых чатах. " +
                 "Бот автоматически сопоставит тебя с идеальными напарниками, учитывая:\n" +
                 "🔹 Игровые дисциплины и твои любимые роли\n" +
@@ -21,5 +21,6 @@ public class StartCommand implements Command {
                 "С чего начать?\n" +
                 "Отправь /help, чтобы посмотреть список всех доступных команд.\n" +
                 "Отправь /about, чтобы узнать концепцию проекта.";
+        return new CommandResponse(text);
     }
 }
