@@ -21,7 +21,10 @@ public class TransitionTable {
         add(BotState.REG_WAITING_NAME,BotEvent.TEXT,BotState.REG_WAITING_STEAM_URL);
         add(BotState.REG_WAITING_STEAM_URL,BotEvent.TEXT,BotState.REG_WAITING_ROLE);
         add(BotState.REG_WAITING_ROLE,BotEvent.TEXT,BotState.REG_WAITING_PRIME_TIME);
+        add(BotState.REG_WAITING_PRIME_TIME,BotEvent.TEXT,BotState.REG_WAITING_GAMES);
+
         // для вызова команды /back
+        add(BotState.REG_WAITING_GAMES,BotEvent.CMD_BACK,BotState.REG_WAITING_PRIME_TIME);
         add(BotState.REG_WAITING_PRIME_TIME,BotEvent.CMD_BACK,BotState.REG_WAITING_ROLE);
         add(BotState.REG_WAITING_ROLE, BotEvent.CMD_BACK,BotState.REG_WAITING_STEAM_URL);
         add(BotState.REG_WAITING_STEAM_URL, BotEvent.CMD_BACK,BotState.REG_WAITING_NAME);

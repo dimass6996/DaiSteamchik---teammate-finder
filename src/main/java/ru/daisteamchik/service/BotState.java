@@ -7,5 +7,6 @@ public enum BotState {
     REG_WAITING_STEAM_URL,
     REG_WAITING_PRIME_TIME,
     REG_WAITING_ROLE,
+    REG_WAITING_GAMES,
     DONE,
 }

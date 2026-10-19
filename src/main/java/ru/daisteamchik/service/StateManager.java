@@ -22,4 +22,8 @@ public class StateManager {
         return next;
     }
 
+    public void printState(long chatId){
+        System.out.println(getState(chatId).toString());
+    }
+
 }
