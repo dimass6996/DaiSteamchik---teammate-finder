@@ -49,24 +49,8 @@ public class Bot extends TelegramLongPollingBot {
 
         String response = null;
 
-        // Начало регистрации
-        if (text.equals("/registry")) {
-
-            response = registrationHandler.start(userId);
-
-        }
-
-        // Отмена регистрации
-        else if (text.equals("/cancel")
-                && registrationHandler.isRegistering(userId)) {
-
-            registrationHandler.cancel(userId);
-            response = "Регистрация отменена!";
-
-        }
-
-        // Обычные команды
-        else if (text.startsWith("/")) {
+        // Обработка всех команд
+        if (text.startsWith("/")) {
 
             String[] parts = text.split("\\s+");
 
@@ -76,12 +60,15 @@ public class Bot extends TelegramLongPollingBot {
             Command command = commandRegistry.getCommand(commandName);
 
             if (command != null) {
-                CommandResponse answer = command.execute(args);
+                CommandResponse answer = command.execute(userId, args);
                 response = answer.getMessage();
+            } else {
+                response = "Неизвестная команда. Используй /help";
             }
+
         }
 
-        // Ответы на вопросы регистрации
+        // Обработка ответов во время регистрации
         else if (registrationHandler.isRegistering(userId)) {
 
             response = registrationHandler.handle(userId, text);
@@ -92,7 +79,6 @@ public class Bot extends TelegramLongPollingBot {
         if (response != null) {
 
             SendMessage message = new SendMessage();
-
             message.setChatId(chatId);
             message.setText(response);
 

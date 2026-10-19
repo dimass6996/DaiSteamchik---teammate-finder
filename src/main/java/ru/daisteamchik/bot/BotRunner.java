@@ -19,6 +19,9 @@ public class BotRunner {
             registry.register(new AboutCommand());
             registry.register(new AuthorCommand());
             registry.register(new StartCommand());
+            registry.register(new RegistryCommand(registrationHandler));
+            registry.register(new BackCommand(registrationHandler));
+            registry.register(new CancelCommand(registrationHandler));
 
             Bot bot = new Bot(config.getBotToken(), config.getBotUsername(), registry,registrationHandler);
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);

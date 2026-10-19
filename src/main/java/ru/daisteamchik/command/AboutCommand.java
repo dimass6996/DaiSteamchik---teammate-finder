@@ -13,7 +13,7 @@ public class AboutCommand implements Command {
     }
 
     @Override
-    public CommandResponse execute(String[] args) {
+    public CommandResponse execute(long userId,String[] args) {
         String descriptionText = "🎮 DaiSteamchik: Teammate Finder\n" +
                 "Платформа для быстрого поиска тиммейтов для совместных игр в Steam.\n\n" +
                 "Возможности:\n" +

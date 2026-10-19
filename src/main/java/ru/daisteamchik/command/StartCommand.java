@@ -10,7 +10,7 @@ public class StartCommand implements Command {
         return "Команда запускает бота и выводит приветственное сообщение";
     }
 
-    public CommandResponse execute(String[] args){
+    public CommandResponse execute(long userId, String[] args){
         String text = "Привет! 🎮 Добро пожаловать в DaiSteamchik — мини-соцсеть для быстрого и точного поиска тиммейтов в Steam!\n\n" +
                 "Мы устраняем проблему долгого ручного поиска на форумах и в открытых чатах. " +
                 "Бот автоматически сопоставит тебя с идеальными напарниками, учитывая:\n" +

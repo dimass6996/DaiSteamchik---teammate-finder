@@ -8,7 +8,7 @@ public class AuthorCommand implements Command {
     public String getDescription() { return "Информация об авторах проекта"; }
 
     @Override
-    public CommandResponse execute(String[] args) {
+    public CommandResponse execute(long userId,String[] args) {
         String text = "Авторы проекта DaiSteamchik:\n" +
                 "Бобешко Данил | @ply3a\n" +
                 "Тихонов Дмитрий | @dimass6996\n\n" +

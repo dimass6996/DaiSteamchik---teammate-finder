@@ -157,10 +157,26 @@ public class RegistrationHandler {
         }
     }
 
-    public void back(long userId){
-        //stateManager.printState(userId);
+    public String back(long userId) {
         stateManager.next(userId, BotEvent.CMD_BACK);
-        //stateManager.printState(userId);
+
+        BotState state = stateManager.getState(userId);
+
+        switch (state) {
+            case REG_WAITING_NAME:
+                return "Как тебя зовут?";
+            case REG_WAITING_STEAM_URL:
+                return "Отправь ссылку на свой Steam-профиль:";
+            case REG_WAITING_PRIME_TIME:
+                return "В какое время ты обычно играешь?";
+            case REG_WAITING_ROLE:
+                return "Какую роль предпочитаешь в команде?";
+            case NONE:
+                sessions.remove(userId);
+                return "Регистрация отменена!";
+            default:
+                return "Ошибка возврата!";
+        }
     }
     // Отмена регистрации
     public void cancel(long userId) {

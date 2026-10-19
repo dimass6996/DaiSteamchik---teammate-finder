@@ -8,5 +8,5 @@ class AboutCommandTest {
     @BeforeEach void setUp() { command = new AboutCommand(); }
     @Test void getName() { assertEquals("/about", command.getName()); }
     @Test void getDescription() { assertNotNull(command.getDescription()); }
-    @Test void execute() { assertTrue(command.execute(new String[]{}).getMessage().contains("DaiSteamchik")); }
+    @Test void execute() { assertTrue(command.execute(1234,new String[]{}).getMessage().contains("DaiSteamchik")); }
 }

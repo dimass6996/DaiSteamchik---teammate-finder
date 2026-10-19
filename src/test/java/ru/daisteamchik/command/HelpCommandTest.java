@@ -13,7 +13,7 @@ public class HelpCommandTest{
 
         registry.register(helpCommand); // добавляю команду help command в тестовый реестр
 
-        String result = helpCommand.execute(new String[]{}).getMessage(); // вызываю команду help с пустыми аргументами
+        String result = helpCommand.execute(1234,new String[]{}).getMessage(); // вызываю команду help с пустыми аргументами
 
 
         assertNotNull(result);//проверяю что команда что-то вернула вообще
