@@ -73,6 +73,8 @@ public class Bot extends TelegramLongPollingBot {
 
             response = registrationHandler.handle(userId, text);
 
+        } else {
+            response = "Не понял тебя, введи /help чтобы узнать доступные комманды";
         }
 
         // Отправка ответа
