@@ -1,9 +1,10 @@
 package ru.daisteamchik.registration;
 
-import ru.daisteamchik.service.BotEvent;
+import ru.daisteamchik.model.User;
 import ru.daisteamchik.service.BotState;
 import ru.daisteamchik.service.StateManager;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,19 +12,31 @@ public class RegistrationHandler {
 
     private final StateManager stateManager;
 
-    // Незавершённые анкеты пользователей
+    // гнезавершённые анкеты пользователей
     private final Map<Long, RegistrationSession> sessions = new HashMap<>();
+
+    // pарегистрированные пользователи , они в user
+    private final Map<Long, User> users = new HashMap<>();
+
+    private final RegistryMessageValidator validator = new RegistryMessageValidator();
 
     public RegistrationHandler(StateManager stateManager) {
         this.stateManager = stateManager;
     }
 
-    private RegistryMessageValidator validator = new RegistryMessageValidator();
-
     public boolean isRegistering(long userId) {
         return sessions.containsKey(userId);
     }
-    // Начало регистрации
+
+    public User getUser(long userId) {
+        return users.get(userId);
+    }
+
+    public Map<Long, User> getUsers() {
+        return Collections.unmodifiableMap(users);
+    }
+
+    // начинаем регистрацию
     public String start(long userId) {
 
         if (isRegistering(userId)) {
@@ -37,9 +50,7 @@ public class RegistrationHandler {
         return "Как тебя зовут?";
     }
 
-    // Проверка активной регистрации
-
-    // Обработка ответов
+    // обрабатывваем ответы
     public String handle(long userId, String text) {
 
         RegistrationSession session = sessions.get(userId);
@@ -50,139 +61,108 @@ public class RegistrationHandler {
 
         BotState state = stateManager.getState(userId);
 
-        text = text.trim();
+        text = (text == null) ? "" : text.trim();
 
         switch (state) {
 
-            case REG_WAITING_NAME:
-
-                if (text.isEmpty()) {
-                    return "Имя не может быть пустым!";
+            case REG_WAITING_NAME: {
+                String error = validator.getNameError(text);
+                if (error != null) {
+                    return error;
                 }
+                session.setName(text);
+                stateManager.setState(userId, BotState.REG_WAITING_STEAM_URL);
+                return "Отправь ссылку на свой Steam-профиль:";
+            }
 
-                // валидация имени
-                if (validator.validateName(text)) {
-                    session.setName(text);
-
-                    stateManager.setState(
-                            userId, BotState.REG_WAITING_STEAM_URL
-                    );
-
-                    return "Отправь ссылку на свой Steam-профиль:";
-                }else{
-                    return "проверь корректность ввода имени";
+            case REG_WAITING_STEAM_URL: {
+                String error = validator.getUrlError(text);
+                if (error != null) {
+                    return error;
                 }
+                session.setSteamUrl(text);
+                stateManager.setState(userId, BotState.REG_WAITING_PRIME_TIME);
+                return "В какое время ты обычно играешь?";
+            }
 
-
-
-            case REG_WAITING_STEAM_URL:
-
-                if (text.isEmpty()) {
-                    return "Ссылка не может быть пустой!";
+            case REG_WAITING_PRIME_TIME: {
+                String error = validator.getPrimeTimeError(text);
+                if (error != null) {
+                    return error;
                 }
-                if (validator.validateUrl(text)) {
-                    session.setSteamUrl(text);
-
-                    stateManager.setState(
-                            userId, BotState.REG_WAITING_PRIME_TIME
-                    );
-
-                    return "В какое время ты обычно играешь?";
-                }else{
-                    return "проверь корректность ссылки";
-                }
-
-
-            case REG_WAITING_PRIME_TIME:
-
-                if (text.isEmpty()) {
-                    return "Укажи время, когда обычно играешь!";
-                }
-
                 session.setPrimeTime(text);
+                stateManager.setState(userId, BotState.REG_WAITING_ROLE);
+                return "Укажи свою роль (например, Керри, Саппорт, Капитан):";
+            }
 
-                stateManager.setState(
-                        userId, BotState.REG_WAITING_ROLE
-                );
-
-                return "Какую роль предпочитаешь в команде?";
-
-
-            case REG_WAITING_ROLE:
-
-                if (text.isEmpty()) {
-                    return "Роль не может быть пустой!";
+            case REG_WAITING_ROLE: {
+                String error = validator.getRolesError(text);
+                if (error != null) {
+                    return error;
                 }
-                if (validator.validateRoles(text)) {
+                session.setRole(text);
+                stateManager.setState(userId, BotState.REG_WAITING_GAMES);
+                return "В какие игры ты играешь?";
+            }
 
-                    session.setRole(text);
-
-                    stateManager.setState(
-                            userId, BotState.REG_WAITING_GAMES
-                    );
-
-                    return "В какие игры ты играешь?";
-                }else{
-                    return "проверь корректность введенных ролей";
+            case REG_WAITING_GAMES: {
+                String error = validator.getGamesError(text);
+                if (error != null) {
+                    return error;
                 }
+                session.setGames(text);
 
+                User user = User.fromSession(userId, session);
+                users.put(userId, user);
 
-            case REG_WAITING_GAMES:
+                sessions.remove(userId);
+                stateManager.setState(userId, BotState.DONE);
 
-                if (text.isEmpty()) {
-                    return "Укажи хотя бы одну игру!";
-                }
-                if (validator.validateGames(text)) {
-                    session.setGames(text);
-
-                    // Позже здесь будет сохранение в базу данных
-                    System.out.println("Новая анкета:");
-                    System.out.println("User ID: " + userId);
-                    System.out.println("Имя: " + session.getName());
-                    System.out.println("Steam: " + session.getSteamUrl());
-                    System.out.println("Прайм-тайм: " + session.getPrimeTime());
-                    System.out.println("Роль: " + session.getRole());
-                    System.out.println("Игры: " + session.getGames());
-
-                    stateManager.setState(userId, BotState.DONE);
-                    sessions.remove(userId);
-
-                    return "Регистрация успешно завершена!";
-                }else{
-                    return "проверь корректность введенных игр";
-                }
+                return "Регистрация завершена!\n\n" +
+                        "Имя: " + user.getName() + "\n" +
+                        "Steam: " + user.getSteamUrl() + "\n" +
+                        "Прайм-тайм: " + user.getPrimeTime() + "\n" +
+                        "Роль: " + user.getRole() + "\n" +
+                        "Игры: " + user.getGames();
+            }
 
             default:
-                return "Неизвестный этап регистрации!";
+                return "Ошибка регистрации.";
         }
+    }
+
+    public String cancel(long userId) {
+        sessions.remove(userId);
+        stateManager.setState(userId, BotState.NONE);
+        return "Регистрация отменена.";
     }
 
     public String back(long userId) {
-        stateManager.next(userId, BotEvent.CMD_BACK);
+        BotState currentState = stateManager.getState(userId);
 
-        BotState state = stateManager.getState(userId);
+        switch (currentState) {
 
-        switch (state) {
-            case REG_WAITING_NAME:
-                return "Как тебя зовут?";
             case REG_WAITING_STEAM_URL:
-                return "Отправь ссылку на свой Steam-профиль:";
+                stateManager.setState(userId, BotState.REG_WAITING_NAME);
+                return "Возврат к вводу имени. Как тебя зовут?";
+
             case REG_WAITING_PRIME_TIME:
-                return "В какое время ты обычно играешь?";
+                stateManager.setState(userId, BotState.REG_WAITING_STEAM_URL);
+                return "Возврат к вводу ссылки. Отправь ссылку на свой Steam-профиль:";
+
             case REG_WAITING_ROLE:
-                return "Какую роль предпочитаешь в команде?";
-            case NONE:
-                sessions.remove(userId);
-                return "Регистрация отменена!";
+                stateManager.setState(userId, BotState.REG_WAITING_PRIME_TIME);
+                return "Возврат к вводу времени. В какое время ты обычно играешь?";
+
+            case REG_WAITING_GAMES:
+                stateManager.setState(userId, BotState.REG_WAITING_ROLE);
+                return "Возврат к вводу роли. Укажи свою роль:";
+
+            case REG_WAITING_NAME:
+                return "Ты находишься на первом шаге регистрации. Используй /cancel для отмены.";
+
             default:
-                return "Ошибка возврата!";
+                return "Невозможно вернуться назад.";
         }
-    }
-    // Отмена регистрации
-    public void cancel(long userId) {
-
-        sessions.remove(userId);
-
-        stateManager.setState(userId, BotState.NONE);
     }
 }

@@ -1,6 +1,5 @@
 package ru.daisteamchik.command;
 
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import ru.daisteamchik.service.StateManager;
@@ -13,28 +12,23 @@ public class RegistryHandlerTest {
 
     @Test
     void testRegistrationHandler(){
-        assertTrue(registrationHandler.start(userId) == "Как тебя зовут?");
+        assertEquals("Как тебя зовут?", registrationHandler.start(userId));
 
-        // проверка ввода имени
-        assertTrue(registrationHandler.handle(userId,"Антошка") == "Отправь ссылку на свой Steam-профиль:");
+        assertEquals("Отправь ссылку на свой Steam-профиль:", registrationHandler.handle(userId,"Димасик"));
 
-        // проверка ввода ссылки на steam
-        // ждет добавления валидации assertTrue(registrationHandler.handle(userId,"matmech.ru") != "В какое время ты обычно играешь?");
-        assertTrue(registrationHandler.handle(userId,"https://steamcommunity.com/profiles/76561198174543473") == "В какое время ты обычно играешь?");
+        assertEquals("В какое время ты обычно играешь?", registrationHandler.handle(userId,"https://steamcommunity.com/profiles/76561198174543473"));
 
-        // проверка ввода PRIME TIME
-        // ждет добавления валидации assertTrue(registrationHandler.handle(userId,"67:00 - 253:00") != "Какую роль предпочитаешь в команде?");
-        assertTrue(registrationHandler.handle(userId,"22:00 - 23:00") == "Какую роль предпочитаешь в команде?");
+        assertEquals("Укажи свою роль (например, Керри, Саппорт, Капитан):", registrationHandler.handle(userId,"22:00 - 23:00"));
 
-        // проверка ввода списка ролей
-        assertTrue(registrationHandler.handle(userId,"керри, саппорт") == "В какие игры ты играешь?");
+        assertEquals("В какие игры ты играешь?", registrationHandler.handle(userId,"керри, саппорт"));
 
-        // проверка ввода списка игр
+        String expectedFinalMessage = "Регистрация завершена!\n\n" +
+                "Имя: Димасик\n" +
+                "Steam: https://steamcommunity.com/profiles/76561198174543473\n" +
+                "Прайм-тайм: 22:00 - 23:00\n" +
+                "Роль: керри, саппорт\n" +
+                "Игры: dota 2, cs 2";
 
-        assertTrue(registrationHandler.handle(userId,"dota 2, cs 2") == "Регистрация успешно завершена!");
-
-
-
-
+        assertEquals(expectedFinalMessage, registrationHandler.handle(userId,"dota 2, cs 2"));
     }
 }
