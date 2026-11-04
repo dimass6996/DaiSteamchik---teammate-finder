@@ -6,3 +6,7 @@ target/
 .env.local
 .env.*.local
 
+# база данных SQLite
+*.db
+*.sqlite
+daisteamchik.db

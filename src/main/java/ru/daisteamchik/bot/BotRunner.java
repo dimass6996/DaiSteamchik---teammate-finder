@@ -22,7 +22,7 @@ public class BotRunner {
             registry.register(new RegistryCommand(registrationHandler));
             registry.register(new BackCommand(registrationHandler));
             registry.register(new CancelCommand(registrationHandler));
-
+            registry.register(new ProfileCommand(registrationHandler));
             Bot bot = new Bot(config.getBotToken(), config.getBotUsername(), registry,registrationHandler);
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             botsApi.registerBot(bot);

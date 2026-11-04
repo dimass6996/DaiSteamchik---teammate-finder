@@ -1,6 +1,7 @@
 package ru.daisteamchik.registration;
 
 import ru.daisteamchik.model.User;
+import ru.daisteamchik.repository.UserRepository;
 import ru.daisteamchik.service.BotState;
 import ru.daisteamchik.service.StateManager;
 
@@ -12,16 +13,19 @@ public class RegistrationHandler {
 
     private final StateManager stateManager;
 
-    // гнезавершённые анкеты пользователей
+    // незавершённые анкеты пользователей
     private final Map<Long, RegistrationSession> sessions = new HashMap<>();
 
-    // pарегистрированные пользователи , они в user
-    private final Map<Long, User> users = new HashMap<>();
+    private final UserRepository userRepository = new UserRepository();
+
+    // зарегистрированные пользователи
+    private final Map<Long, User> users;
 
     private final RegistryMessageValidator validator = new RegistryMessageValidator();
 
     public RegistrationHandler(StateManager stateManager) {
         this.stateManager = stateManager;
+        this.users = userRepository.loadAllUsers();
     }
 
     public boolean isRegistering(long userId) {
@@ -113,7 +117,12 @@ public class RegistrationHandler {
                 session.setGames(text);
 
                 User user = User.fromSession(userId, session);
+
+                // Сохраняем анкету в оперативную память
                 users.put(userId, user);
+
+                // СОХРАНЯЕМ АНКЕТУ В БАЗУ ДАННЫХ (SQLite)
+                userRepository.saveUser(user);
 
                 sessions.remove(userId);
                 stateManager.setState(userId, BotState.DONE);
