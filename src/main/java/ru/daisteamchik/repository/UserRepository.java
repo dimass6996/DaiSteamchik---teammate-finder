@@ -70,7 +70,6 @@ public class UserRepository {
                     String prime_time = rs.getString("prime_time");
                     String role = rs.getString("role");
                     String games = rs.getString("games");
-                    System.out.println("user" + name + games);
 
                     return new User(user_id, name, steam_url, prime_time, role, games);
                 }
