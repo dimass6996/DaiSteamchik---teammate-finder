@@ -11,7 +11,7 @@ class ProfileCommandTest {
     void checkCommandInfo() {
         StateManager stateManager = new StateManager();
         RegistrationHandler handler = new RegistrationHandler(stateManager);
-        ProfileCommand command = new ProfileCommand(handler);
+        ProfileCommand command = new ProfileCommand();
 
         assertEquals("/profile", command.getName());
         assertNotNull(command.getDescription());
@@ -21,7 +21,7 @@ class ProfileCommandTest {
     void checkExecuteWithoutProfile() {
         StateManager stateManager = new StateManager();
         RegistrationHandler handler = new RegistrationHandler(stateManager);
-        ProfileCommand command = new ProfileCommand(handler);
+        ProfileCommand command = new ProfileCommand();
 
         // тут рандомный айди чтобы проверить бота
         CommandResponse response = command.execute(999999L, new String[]{});

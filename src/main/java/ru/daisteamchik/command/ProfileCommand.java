@@ -2,14 +2,12 @@ package ru.daisteamchik.command;
 
 import ru.daisteamchik.model.User;
 import ru.daisteamchik.registration.RegistrationHandler;
+import ru.daisteamchik.repository.UserRepository;
 
 public class ProfileCommand implements Command {
 
-    private final RegistrationHandler registrationHandler;
+    private final UserRepository userRep = new UserRepository();
 
-    public ProfileCommand(RegistrationHandler registrationHandler) {
-        this.registrationHandler = registrationHandler;
-    }
 
     @Override
     public String getName() {
@@ -23,8 +21,7 @@ public class ProfileCommand implements Command {
 
     @Override
     public CommandResponse execute(long userId, String[] args) {
-        User user = registrationHandler.getUser(userId);
-
+        User user = userRep.getUserFromBd(userId);
         if (user == null) {
             return new CommandResponse("У тебя еще нет анкеты. Напиши /reg, чтобы зарегистрироваться.");
         }

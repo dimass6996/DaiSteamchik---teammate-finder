@@ -55,6 +55,33 @@ public class UserRepository {
         }
     }
 
+    public User getUserFromBd(Long userId){
+        String sql = "SELECT user_id, name, steam_url, prime_time, role, games FROM users WHERE user_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setLong(1, userId);
+
+            try (ResultSet rs = pstmt.executeQuery()){
+                while(rs.next()){
+                    Long user_id = rs.getLong("user_id");
+                    String name = rs.getString("name");
+                    String steam_url = rs.getString("steam_url");
+                    String prime_time = rs.getString("prime_time");
+                    String role = rs.getString("role");
+                    String games = rs.getString("games");
+                    System.out.println("user" + name + games);
+
+                    return new User(user_id, name, steam_url, prime_time, role, games);
+                }
+            }
+
+        } catch (SQLException e){
+            System.err.println("Ошибка при получении пользователя: " + e.getMessage());
+        }
+        return null;
+    }
+
     // загружаем всех пользователй в бд
     public Map<Long, User> loadAllUsers() {
         Map<Long, User> users = new HashMap<>();
