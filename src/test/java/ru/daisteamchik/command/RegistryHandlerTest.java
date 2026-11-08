@@ -12,15 +12,30 @@ public class RegistryHandlerTest {
 
     @Test
     void testRegistrationHandler(){
+        registrationHandler.start(userId);
+        assertEquals("Регистрация отменена.",registrationHandler.cancel(userId));
+
         assertEquals("Как тебя зовут?", registrationHandler.start(userId));
+        assertEquals("Ты находишься на первом шаге регистрации. Используй /cancel для отмены.",registrationHandler.back(userId));
+        registrationHandler.start(userId);
 
         assertEquals("Отправь ссылку на свой Steam-профиль:", registrationHandler.handle(userId,"Димасик"));
+        assertEquals("Возврат к вводу имени. Как тебя зовут?",registrationHandler.back(userId));
+        registrationHandler.handle(userId,"Димасик");
 
         assertEquals("В какое время ты обычно играешь?", registrationHandler.handle(userId,"https://steamcommunity.com/profiles/76561198174543473"));
+        assertEquals("Возврат к вводу ссылки. Отправь ссылку на свой Steam-профиль:",registrationHandler.back(userId));
+        registrationHandler.handle(userId,"https://steamcommunity.com/profiles/76561198174543473");
 
         assertEquals("Укажи свою роль (например, Керри, Саппорт, Капитан):", registrationHandler.handle(userId,"22:00 - 23:00"));
+        assertEquals("Возврат к вводу времени. В какое время ты обычно играешь?",registrationHandler.back(userId));
+        registrationHandler.handle(userId,"22:00 - 23:00");
 
         assertEquals("В какие игры ты играешь?", registrationHandler.handle(userId,"керри, саппорт"));
+        assertEquals("Возврат к вводу роли. Укажи свою роль:",registrationHandler.back(userId));
+        registrationHandler.handle(userId,"керри, саппорт");
+
+
 
         String expectedFinalMessage = "Регистрация завершена!\n\n" +
                 "Имя: Димасик\n" +
