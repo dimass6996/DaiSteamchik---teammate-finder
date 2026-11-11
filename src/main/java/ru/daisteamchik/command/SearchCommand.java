@@ -1,7 +1,5 @@
 package ru.daisteamchik.command;
 
-import ru.daisteamchik.registration.RegistrationHandler;
-
 public class SearchCommand implements Command {
 
 

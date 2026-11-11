@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.daisteamchik.command.Command;
 import ru.daisteamchik.command.CommandRegistry;
 import ru.daisteamchik.command.CommandResponse;
-import ru.daisteamchik.registration.RegistrationHandler;
+import ru.daisteamchik.handler.RegistrationHandler;
 
 import java.util.Arrays;
 

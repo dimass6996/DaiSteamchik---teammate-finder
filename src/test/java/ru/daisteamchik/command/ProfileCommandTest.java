@@ -2,7 +2,7 @@ package ru.daisteamchik.command;
 
 import org.junit.jupiter.api.Test;
 import ru.daisteamchik.service.StateManager;
-import ru.daisteamchik.registration.RegistrationHandler;
+import ru.daisteamchik.handler.RegistrationHandler;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProfileCommandTest {

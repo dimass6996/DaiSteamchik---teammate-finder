@@ -2,8 +2,9 @@ package ru.daisteamchik.command;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import ru.daisteamchik.handler.RegistrationHandler;
 import ru.daisteamchik.service.StateManager;
-import ru.daisteamchik.registration.*;
 
 public class RegistryHandlerTest {
     private StateManager stateManager = new StateManager();

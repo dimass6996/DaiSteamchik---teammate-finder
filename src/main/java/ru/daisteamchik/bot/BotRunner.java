@@ -4,9 +4,8 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ru.daisteamchik.command.*;
-import ru.daisteamchik.registration.RegistrationHandler;
+import ru.daisteamchik.handler.RegistrationHandler;
 import ru.daisteamchik.service.StateManager;
-import ru.daisteamchik.registration.RegistrationHandler;
 
 public class BotRunner {
     public static void start() {

@@ -1,7 +1,6 @@
 package ru.daisteamchik.command;
 
 import ru.daisteamchik.model.User;
-import ru.daisteamchik.registration.RegistrationHandler;
 import ru.daisteamchik.repository.UserRepository;
 
 public class ProfileCommand implements Command {

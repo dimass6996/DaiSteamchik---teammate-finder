@@ -1,6 +1,6 @@
 package ru.daisteamchik.command;
 
-import ru.daisteamchik.registration.RegistrationHandler;
+import ru.daisteamchik.handler.RegistrationHandler;
 
 public class BackCommand implements Command {
 

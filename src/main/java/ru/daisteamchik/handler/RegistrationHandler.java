@@ -1,6 +1,8 @@
-package ru.daisteamchik.registration;
+package ru.daisteamchik.handler;
 
 import ru.daisteamchik.model.User;
+import ru.daisteamchik.registration.RegistrationSession;
+import ru.daisteamchik.registration.RegistryMessageValidator;
 import ru.daisteamchik.repository.UserRepository;
 import ru.daisteamchik.service.BotState;
 import ru.daisteamchik.service.StateManager;
