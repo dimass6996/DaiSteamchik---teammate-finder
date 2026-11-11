@@ -6,15 +6,13 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 
 public class CommandResponse {
     private final String message;
-    private final InlineKeyboardMarkup keyboard; // Новое поле для кнопок
+    private final InlineKeyboardMarkup keyboard;
 
-    // Старый конструктор (если кнопок нет)
     public CommandResponse(String message) {
         this.message = message;
         this.keyboard = null;
     }
 
-    // Новый конструктор (для текста с кнопками)
     public CommandResponse(String message, InlineKeyboardMarkup keyboard) {
         this.message = message;
         this.keyboard = keyboard;

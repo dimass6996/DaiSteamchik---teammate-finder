@@ -47,7 +47,7 @@ public class Bot extends TelegramLongPollingBot {
         long chatId = update.getMessage().getChatId();
         long userId = update.getMessage().getFrom().getId();
 
-        String response = null;
+        CommandResponse response = null;
 
         // Обработка всех команд
         if (text.startsWith("/")) {
@@ -60,29 +60,30 @@ public class Bot extends TelegramLongPollingBot {
             Command command = commandRegistry.getCommand(commandName);
 
             if (command != null) {
-                CommandResponse answer = command.execute(userId, args);
-                response = answer.getMessage();
+                response = command.execute(userId, args);
             } else {
-                response = "Неизвестная команда. Используй /help";
+                response = new CommandResponse("Неизвестная команда. Используй /help");
             }
 
         }
-
-        // Обработка ответов во время регистрации
+        // обработка ответов во время регистрации
         else if (registrationHandler.isRegistering(userId)) {
-
-            response = registrationHandler.handle(userId, text);
-
+            response = new CommandResponse(registrationHandler.handle(userId, text));
         } else {
-            response = "Не понял тебя, введи /help чтобы узнать доступные комманды";
+            response = new CommandResponse("Не понял тебя, введи /help чтобы узнать доступные команды");
         }
 
         // Отправка ответа
         if (response != null) {
-
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
-            message.setText(response);
+
+            message.setText(response.getMessage());
+            message.setParseMode("HTML");
+
+            if (response.getKeyboard() != null) {
+                message.setReplyMarkup(response.getKeyboard());
+            }
 
             try {
                 execute(message);

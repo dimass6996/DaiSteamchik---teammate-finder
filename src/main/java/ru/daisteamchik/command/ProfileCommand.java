@@ -11,7 +11,6 @@ import java.util.List;
 
 public class ProfileCommand implements Command {
 
-    // В идеале передавать userRep через конструктор, но пока оставим так, чтобы не сломать BotRunner
     private final UserRepository userRep = new UserRepository();
 
     @Override
@@ -26,18 +25,15 @@ public class ProfileCommand implements Command {
 
     @Override
     public CommandResponse execute(long userId, String[] args) {
-        // ИСПРАВЛЕНИЕ 2: Заменили registrationHandler на userRep
         User user = userRep.getUser(userId);
 
         if (user == null) {
             return new CommandResponse("У тебя еще нет анкеты. Напиши /reg, чтобы зарегистрироваться.");
         }
 
-        // Создаем Inline-кнопки
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
 
-        // Первый ряд кнопок
         List<InlineKeyboardButton> rowInline1 = new ArrayList<>();
 
         InlineKeyboardButton btnEdit = new InlineKeyboardButton();
@@ -51,11 +47,9 @@ public class ProfileCommand implements Command {
         rowInline1.add(btnEdit);
         rowInline1.add(btnDelete);
 
-        // Добавляем ряд в клавиатуру
         rowsInline.add(rowInline1);
         markupInline.setKeyboard(rowsInline);
 
-        // Возвращаем красивую карточку + кнопки
         return new CommandResponse(user.toProfileCard(), markupInline);
     }
 }
