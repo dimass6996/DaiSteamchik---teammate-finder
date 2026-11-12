@@ -28,12 +28,12 @@ public class BotRunner {
             registry.register(new CancelCommand(registrationHandler));
             registry.register(new ProfileCommand());
             bot = new Bot(config.getBotOptions(), config.getBotToken(), config.getBotUsername(), registry,registrationHandler);
-            MessageSender sender = new MessageSender(bot);
+            MessageSender sender = bot.getMessageSender();
             SearchHandler searchHandler = new SearchHandler(stateManager, sender);
             bot.setSearchHandler(searchHandler);
+            registry.register(new SearchCommand(searchHandler));
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             botsApi.registerBot(bot);
-            registry.register(new SearchCommand(searchHandler));
             System.out.println("Бот запущен: " + config.getBotUsername());
         } catch (TelegramApiException e) {
             System.err.println(describeError(e, config.getBotToken()));

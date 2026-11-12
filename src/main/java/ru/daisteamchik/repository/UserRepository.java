@@ -92,7 +92,7 @@ public class UserRepository {
         try (Connection conn = DriverManager.getConnection(URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(2, limit);
+            pstmt.setInt(1, limit);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {

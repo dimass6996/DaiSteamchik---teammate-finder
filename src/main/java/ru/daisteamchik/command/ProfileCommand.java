@@ -20,7 +20,7 @@ public class ProfileCommand implements Command {
 
     @Override
     public CommandResponse execute(long userId, String[] args) {
-        User user = userRep.getUserFromBd(userId);
+        User user = getUser(userId);
         if (user == null) {
             return new CommandResponse("У тебя еще нет анкеты. Напиши /reg, чтобы зарегистрироваться.");
         }
@@ -28,5 +28,9 @@ public class ProfileCommand implements Command {
         String text = "Твоя анкета:\n\n" + user.toString();
 
         return new CommandResponse(text);
+    }
+
+    public User getUser(long userId) {
+        return userRep.getUserFromBd(userId);
     }
 }

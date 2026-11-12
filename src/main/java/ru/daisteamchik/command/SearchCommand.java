@@ -6,6 +6,7 @@ public class SearchCommand implements Command {
     private SearchHandler handler;
 
     public SearchCommand(SearchHandler searchHandler) {
+        this.handler = searchHandler;
     }
 
     @Override

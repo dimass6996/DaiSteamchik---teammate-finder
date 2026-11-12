@@ -30,6 +30,10 @@ public class RegistrationHandler {
         this.users = userRepository.loadAllUsers();
     }
 
+    public User getUser(long userId) {
+        return users.get(userId);
+    }
+
     public boolean isRegistering(long userId) {
         return sessions.containsKey(userId);
     }
