@@ -1,10 +1,13 @@
 package ru.daisteamchik.bot;
 
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ru.daisteamchik.command.*;
 import ru.daisteamchik.handler.RegistrationHandler;
+import ru.daisteamchik.handler.SearchHandler;
+import ru.daisteamchik.service.MessageSender;
 import ru.daisteamchik.service.StateManager;
 
 public class BotRunner {
@@ -22,9 +25,15 @@ public class BotRunner {
             registry.register(new BackCommand(registrationHandler));
             registry.register(new CancelCommand(registrationHandler));
             registry.register(new ProfileCommand());
+
+
             Bot bot = new Bot(config.getBotToken(), config.getBotUsername(), registry,registrationHandler);
+            MessageSender sender = new MessageSender(bot);
+            SearchHandler searchHandler = new SearchHandler(stateManager, sender);
+            bot.setSearchHandler(searchHandler);
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             botsApi.registerBot(bot);
+            registry.register(new SearchCommand(searchHandler));
             System.out.println("Бот запущен: " + config.getBotUsername());
         } catch (TelegramApiException e) {
             System.err.println("Ошибка: " + e.getMessage());

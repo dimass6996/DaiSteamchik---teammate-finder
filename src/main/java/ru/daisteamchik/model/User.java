@@ -99,6 +99,14 @@ public class User {
         return Objects.hash(userId, name, steamUrl, primeTime, role, games);
     }
 
+    public String toShortString(){
+        return "Имя: " + name + "\n" +
+                "   id:" + userId + "\n" +
+                "   Steam: " + steamUrl + "\n" +
+                "   Прайм-тайм: " + primeTime + "\n" +
+                "   Роль: " + role + "\n" +
+                "   Игры: " + games;
+    }
     @Override
     public String toString() {
         return "Имя: " + name + "\n" +

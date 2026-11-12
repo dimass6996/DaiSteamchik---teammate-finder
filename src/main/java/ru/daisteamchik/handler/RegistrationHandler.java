@@ -34,13 +34,6 @@ public class RegistrationHandler {
         return sessions.containsKey(userId);
     }
 
-    public User getUser(long userId) {
-        return users.get(userId);
-    }
-
-    public Map<Long, User> getUsers() {
-        return Collections.unmodifiableMap(users);
-    }
 
     // начинаем регистрацию
     public String start(long userId) {

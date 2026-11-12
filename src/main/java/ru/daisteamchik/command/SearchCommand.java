@@ -1,7 +1,12 @@
 package ru.daisteamchik.command;
 
-public class SearchCommand implements Command {
+import ru.daisteamchik.handler.SearchHandler;
 
+public class SearchCommand implements Command {
+    private SearchHandler handler;
+
+    public SearchCommand(SearchHandler searchHandler) {
+    }
 
     @Override
     public String getName() {

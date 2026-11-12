@@ -23,6 +23,12 @@ public class TransitionTable {
         add(BotState.REG_WAITING_ROLE, BotEvent.TEXT, BotState.REG_WAITING_GAMES);
         add(BotState.REG_WAITING_GAMES, BotEvent.TEXT, BotState.DONE);
 
+        //Search:
+        add(BotState.NONE, BotEvent.CMD_START, BotState.SEARCH_WAITING_MESSAGE);
+        add(BotState.SEARCH_WAITING_MESSAGE, BotEvent.TEXT, BotState.DONE);
+        add(BotState.SEARCH_WAITING_MESSAGE, BotEvent.CMD_BACK, BotState.NONE);
+
+
         // Команда /back: движение назад
         add(BotState.REG_WAITING_GAMES, BotEvent.CMD_BACK, BotState.REG_WAITING_ROLE);
         add(BotState.REG_WAITING_ROLE, BotEvent.CMD_BACK, BotState.REG_WAITING_PRIME_TIME);

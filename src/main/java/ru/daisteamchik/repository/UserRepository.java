@@ -3,7 +3,9 @@ package ru.daisteamchik.repository;
 import ru.daisteamchik.model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserRepository {
@@ -79,6 +81,37 @@ public class UserRepository {
             System.err.println("Ошибка при получении пользователя: " + e.getMessage());
         }
         return null;
+    }
+
+    public List<User> getUsersFromBd(int limit) {
+        String sql = "SELECT user_id, name, steam_url, prime_time, role, games " +
+                "FROM users ORDER BY RANDOM() LIMIT ?";
+
+        List<User> users = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(2, limit);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    users.add(new User(
+                            rs.getLong("user_id"),
+                            rs.getString("name"),
+                            rs.getString("steam_url"),
+                            rs.getString("prime_time"),
+                            rs.getString("role"),
+                            rs.getString("games")
+                    ));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return users;
     }
 
     // загружаем всех пользователй в бд

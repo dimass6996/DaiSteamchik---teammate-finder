@@ -8,5 +8,7 @@ public enum BotState {
     REG_WAITING_PRIME_TIME,
     REG_WAITING_ROLE,
     REG_WAITING_GAMES,
+    SEARCH_WAITING_MESSAGE,
     DONE,
+
 }

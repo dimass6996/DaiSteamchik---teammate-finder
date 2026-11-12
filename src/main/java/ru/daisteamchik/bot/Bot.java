@@ -8,6 +8,7 @@ import ru.daisteamchik.command.Command;
 import ru.daisteamchik.command.CommandRegistry;
 import ru.daisteamchik.command.CommandResponse;
 import ru.daisteamchik.handler.RegistrationHandler;
+import ru.daisteamchik.handler.SearchHandler;
 
 import java.util.Arrays;
 
@@ -16,7 +17,6 @@ public class Bot extends TelegramLongPollingBot {
     private final String botUsername;
     private final CommandRegistry commandRegistry;
     private final RegistrationHandler registrationHandler;
-
     public Bot(
             String botToken,
             String botUsername,
@@ -28,6 +28,12 @@ public class Bot extends TelegramLongPollingBot {
         this.botUsername = botUsername;
         this.commandRegistry = commandRegistry;
         this.registrationHandler = registrationHandler;
+    }
+
+    private SearchHandler searchHandler;
+
+    public void setSearchHandler(SearchHandler searchHandler) {
+        this.searchHandler = searchHandler;
     }
 
     @Override
