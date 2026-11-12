@@ -49,6 +49,15 @@ public class User {
         );
     }
 
+    public String toProfileCard() {
+        return "👤 <b>Анкета игрока</b>\n\n" +
+                "Имя: <b>" + this.name + "</b>\n" +
+                "Steam: " + this.steamUrl + "\n" +
+                "Прайм-тайм: <b>" + this.primeTime + "</b>\n" +
+                "Роль: <b>" + this.role + "</b>\n" +
+                "Игры: <i>" + this.games + "</i>";
+    }
+
     public static User fromSession(long userId, RegistrationSession session) {
         return new User(userId, session);
     }
