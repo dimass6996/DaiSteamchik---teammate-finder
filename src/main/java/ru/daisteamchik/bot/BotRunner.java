@@ -9,11 +9,13 @@ import ru.daisteamchik.handler.RegistrationHandler;
 import ru.daisteamchik.handler.SearchHandler;
 import ru.daisteamchik.service.MessageSender;
 import ru.daisteamchik.service.StateManager;
+import java.util.StringJoiner;
 
 public class BotRunner {
     public static void start() {
+        BotConfig config = new BotConfig();
+        Bot bot = null;
         try {
-            BotConfig config = new BotConfig();
             StateManager stateManager = new StateManager();
             RegistrationHandler registrationHandler = new RegistrationHandler(stateManager);
             CommandRegistry registry = new CommandRegistry();
@@ -25,9 +27,7 @@ public class BotRunner {
             registry.register(new BackCommand(registrationHandler));
             registry.register(new CancelCommand(registrationHandler));
             registry.register(new ProfileCommand());
-
-
-            Bot bot = new Bot(config.getBotToken(), config.getBotUsername(), registry,registrationHandler);
+            bot = new Bot(config.getBotOptions(), config.getBotToken(), config.getBotUsername(), registry,registrationHandler);
             MessageSender sender = new MessageSender(bot);
             SearchHandler searchHandler = new SearchHandler(stateManager, sender);
             bot.setSearchHandler(searchHandler);
@@ -36,7 +36,19 @@ public class BotRunner {
             registry.register(new SearchCommand(searchHandler));
             System.out.println("Бот запущен: " + config.getBotUsername());
         } catch (TelegramApiException e) {
-            System.err.println("Ошибка: " + e.getMessage());
+            System.err.println(describeError(e, config.getBotToken()));
+            if (bot != null) {
+                bot.onClosing();
+            }
         }
+    }
+
+    static String describeError(Throwable error, String botToken) {
+        StringJoiner details = new StringJoiner(System.lineSeparator() + "  Причина: ");
+        for (Throwable cause = error; cause != null; cause = cause.getCause()) {
+            String message = String.valueOf(cause.getMessage()).replace(botToken, "[TOKEN]");
+            details.add(cause.getClass().getSimpleName() + ": " + message);
+        }
+        return "Ошибка запуска: " + details;
     }
 }

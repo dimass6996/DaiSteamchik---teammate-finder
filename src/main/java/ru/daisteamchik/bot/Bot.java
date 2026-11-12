@@ -1,6 +1,7 @@
 package ru.daisteamchik.bot;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -18,12 +19,13 @@ public class Bot extends TelegramLongPollingBot {
     private final CommandRegistry commandRegistry;
     private final RegistrationHandler registrationHandler;
     public Bot(
+            DefaultBotOptions options,
             String botToken,
             String botUsername,
             CommandRegistry commandRegistry,
             RegistrationHandler registrationHandler
     ) {
-        super(botToken);
+        super(options, botToken);
 
         this.botUsername = botUsername;
         this.commandRegistry = commandRegistry;
